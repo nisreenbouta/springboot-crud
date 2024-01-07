@@ -38,4 +38,20 @@ public class OrderService {
     }
     return ordList;
     }
+
+    public ResponseEntity<?> getSingleOrder(String orderId) {
+        try {
+            Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+            if (optionalOrder.isPresent()) {
+                Order order = optionalOrder.get();
+                return new ResponseEntity<>(order, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Order not found", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
